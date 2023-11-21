@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>a1b1d878-541b-4dc4-b03e-923168e0fbc9</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20211027141829_AddScimGroup.cs" />
+    <Compile Remove="Data\Migrations\20211027141829_AddScimGroup.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211027143202_AddScimGroup.cs" />
+    <Compile Remove="Data\Migrations\20211027143202_AddScimGroup.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211028135810_AddScimGroup.cs" />
+    <Compile Remove="Data\Migrations\20211028135810_AddScimGroup.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211102080732_AddScimGroup.cs" />
+    <Compile Remove="Data\Migrations\20211102080732_AddScimGroup.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120130617_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120130617_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120131044_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120131044_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120131243_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120131243_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120131725_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120131725_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120131909_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120131909_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120132313_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120132313_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120132604_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120132604_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120133733_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120133733_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120134206_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120134206_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211120140524_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211120140524_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211121134902_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211121134902_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211121135302_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211121135302_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211121141519_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211121141519_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211121142618_AddApplicationUserAndMapping.cs" />
+    <Compile Remove="Data\Migrations\20211121142618_AddApplicationUserAndMapping.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211129132603_AddAppUserAndReqRes.cs" />
+    <Compile Remove="Data\Migrations\20211129132603_AddAppUserAndReqRes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211129134307_AddAppUserAndReqRes.cs" />
+    <Compile Remove="Data\Migrations\20211129134307_AddAppUserAndReqRes.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
+    <PackageReference Include="Azure.Identity" Version="1.7.0" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.19">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+
+</Project>

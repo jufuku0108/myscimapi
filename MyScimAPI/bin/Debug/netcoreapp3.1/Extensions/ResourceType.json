@@ -1,0 +1,37 @@
+   [{
+     "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
+     "id": "User",
+     "name": "User",
+     "endpoint": "/scim/v2/users",
+     "description": "User Account",
+     "schema": "urn:ietf:params:scim:schemas:core:2.0:User",
+     "schemaExtensions": [
+       {
+         "schema":
+           "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+         "required": true
+       }
+     ],
+    "meta": {
+      "resourceType": "ResourceType",
+      "created": "0001-01-01T00:00:00Z",
+      "lastModified": "0001-01-01T00:00:00Z",
+      "location": null,
+      "version": null
+    }
+    },
+    {
+      "schemas": [ "urn:ietf:params:scim:schemas:core:2.0:ResourceType" ],
+      "id": "Group",
+      "name": "Group",
+      "endpoint": "/scim/v2/groups",
+      "description": "Group",
+      "schema": "urn:ietf:params:scim:schemas:core:2.0:Group",
+      "meta": {
+        "resourceType": "ResourceType",
+        "created": "0001-01-01T00:00:00Z",
+        "lastModified": "0001-01-01T00:00:00Z",
+        "location": null,
+        "version": null
+      }
+    }]
