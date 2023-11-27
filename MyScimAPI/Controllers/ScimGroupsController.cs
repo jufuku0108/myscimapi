@@ -114,8 +114,8 @@ namespace MyScimAPI.Controllers
             Response.Headers.Add("Content-Type", "application/scim+json");
             Response.Headers.Add("Location", (string)result["meta"]["location"]);
 
-            //return Ok(result);
-            return NoContent();
+            return Ok(result);
+            //return NoContent();
 
         }
 
@@ -130,8 +130,8 @@ namespace MyScimAPI.Controllers
             Response.Headers.Add("Content-Type", "application/scim+json");
             Response.Headers.Add("Location", (string)result["meta"]["location"]);
 
-            //return Ok(result);
-            return NoContent();
+            return Ok(result);
+            //return NoContent();
 
         }
 

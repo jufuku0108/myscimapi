@@ -1533,6 +1533,8 @@ namespace MyScimAPI.Extensions
                     }
                     else
                     {
+                        if (op == "replace" || op == "Replace")
+                            RemoveSpecificAttributeForScimUserByPath(scimUser, path);
                         AddOrUpdateAttributeForScimUserByPath(scimUser, (JObject)operationJObject, path);
                     }
                 }
@@ -1609,6 +1611,54 @@ namespace MyScimAPI.Extensions
                     if ((string)jObject["name"]["honorificSuffix"] != null)
                         scimUserName.HonorificSuffix = (string)jObject["name"]["honorificSuffix"];
 
+                    scimUserName.ScimUser = scimUser;
+                    _scimDataContext.ScimUserNames.Add(scimUserName);
+
+                }
+            }
+            if ((string)jObject["name.givenName"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    scimUser.Name.GivenName = (string)jObject["name.givenName"];
+                    _scimDataContext.ScimUsers.Update(scimUser);
+                }
+                else
+                {
+                    var scimUserName = new ScimUserName { };
+                    scimUserName.GivenName = (string)jObject["name.givenName"];
+                    scimUserName.ScimUser = scimUser;
+                    _scimDataContext.ScimUserNames.Add(scimUserName);
+
+                }
+            }
+            if ((string)jObject["name.familyName"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    scimUser.Name.FamilyName = (string)jObject["name.familyName"];
+                    _scimDataContext.ScimUsers.Update(scimUser);
+                }
+                else
+                {
+                    var scimUserName = new ScimUserName { };
+                    scimUserName.FamilyName = (string)jObject["name.familyName"];
+                    scimUserName.ScimUser = scimUser;
+                    _scimDataContext.ScimUserNames.Add(scimUserName);
+
+                }
+            }
+            if ((string)jObject["name.formatted"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    scimUser.Name.Formatted = (string)jObject["name.formatted"];
+                    _scimDataContext.ScimUsers.Update(scimUser);
+                }
+                else
+                {
+                    var scimUserName = new ScimUserName { };
+                    scimUserName.Formatted = (string)jObject["name.formatted"];
                     scimUserName.ScimUser = scimUser;
                     _scimDataContext.ScimUserNames.Add(scimUserName);
 
@@ -1985,6 +2035,20 @@ namespace MyScimAPI.Extensions
                 }
             }
 
+            if ((string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:employeeNumber"] != null)
+            {
+                if (scimUser.EnterpriseUser != null)
+                    scimUser.EnterpriseUser.EmployeeNumber = (string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:employeeNumber"];
+                _scimDataContext.ScimUserEnterpriseUsers.Update(scimUser.EnterpriseUser);
+            }
+
+            if ((string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department"] != null)
+            {
+                if (scimUser.EnterpriseUser != null)
+                    scimUser.EnterpriseUser.Department = (string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department"];
+                _scimDataContext.ScimUserEnterpriseUsers.Update(scimUser.EnterpriseUser);
+            }
+
             _scimDataContext.SaveChanges();
         }
         private void AddOrUpdateAttributeForScimUserByPath(ScimUser scimUser, JObject jObject, string path)
@@ -2219,8 +2283,85 @@ namespace MyScimAPI.Extensions
                         _scimDataContext.SaveChanges();
                     }
                     break;
+                case "phoneNumbers[type eq \"work\"].value":
+                    var phoneNumberforwork = (string)jObject["value"];
 
+                    var scimUserPhoneNumbersforwork = scimUser.PhoneNumbers.Where(c => c.Type == "work").ToList();
+                    if(scimUserPhoneNumbersforwork.Count > 0)
+                    {
+                        foreach(var scimUserPhoneNumbersforworkItem in scimUserPhoneNumbersforwork)
+                        {
+                            scimUserPhoneNumbersforworkItem.Value = phoneNumberforwork;
+                            _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumbersforworkItem);
+                            _scimDataContext.SaveChanges();
 
+                        }
+                    }
+                    else
+                    {
+                        var scimUserPhoneNumber = new ScimUserPhoneNumber { };
+                        scimUserPhoneNumber.Value = phoneNumberforwork;
+                        scimUserPhoneNumber.Type = "work";
+                        scimUserPhoneNumber.ScimUser = scimUser;
+                        _scimDataContext.ScimUserPhoneNumbers.Add(scimUserPhoneNumber);                     
+                        _scimDataContext.SaveChanges();
+
+                    }
+
+                    break;
+
+                case "phoneNumbers[type eq \"mobile\"].value":
+                    var phoneNumberformobile = (string)jObject["value"];
+
+                    var scimUserPhoneNumbersformobile = scimUser.PhoneNumbers.Where(c => c.Type == "mobile").ToList();
+                    if (scimUserPhoneNumbersformobile.Count > 0)
+                    {
+                        foreach (var scimUserPhoneNumbersformobileItem in scimUserPhoneNumbersformobile)
+                        {
+                            scimUserPhoneNumbersformobileItem.Value = phoneNumberformobile;
+                            _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumbersformobileItem);
+                            _scimDataContext.SaveChanges();
+
+                        }
+                    }
+                    else
+                    {
+                        var scimUserPhoneNumber = new ScimUserPhoneNumber { };
+                        scimUserPhoneNumber.Value = phoneNumberformobile;
+                        scimUserPhoneNumber.Type = "mobile";
+                        scimUserPhoneNumber.ScimUser = scimUser;
+                        _scimDataContext.ScimUserPhoneNumbers.Add(scimUserPhoneNumber);
+                        _scimDataContext.SaveChanges();
+
+                    }
+
+                    break;
+
+                case "phoneNumbers[type eq \"fax\"].value":
+                    var phoneNumberforfax = (string)jObject["value"];
+
+                    var scimUserPhoneNumbersforfax = scimUser.PhoneNumbers.Where(c => c.Type == "fax").ToList();
+                    if (scimUserPhoneNumbersforfax.Count > 0)
+                    {
+                        foreach (var scimUserPhoneNumbersforfaxItem in scimUserPhoneNumbersforfax)
+                        {
+                            scimUserPhoneNumbersforfaxItem.Value = phoneNumberforfax;
+                            _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumbersforfaxItem);
+                            _scimDataContext.SaveChanges();
+
+                        }
+                    }
+                    else
+                    {
+                        var scimUserPhoneNumber = new ScimUserPhoneNumber { };
+                        scimUserPhoneNumber.Value = phoneNumberforfax;
+                        scimUserPhoneNumber.Type = "fax";
+                        scimUserPhoneNumber.ScimUser = scimUser;
+                        _scimDataContext.ScimUserPhoneNumbers.Add(scimUserPhoneNumber);
+                        _scimDataContext.SaveChanges();
+
+                    }
+                    break;
                 case "ims":
                     var ims = (JArray)jObject["value"];
                     foreach (var im in ims)
@@ -2288,6 +2429,157 @@ namespace MyScimAPI.Extensions
                     }
                     break;
 
+                case "addresses[type eq \"work\"].formatted":
+                    var formatted = (string)jObject["value"];
+
+                    var scimUserAddressListforformatted = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if(scimUserAddressListforformatted.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforformatted in scimUserAddressListforformatted)
+                        {
+                            scimUserAddressItemforformatted.Formatted = formatted;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforformatted);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforformatted = new ScimUserAddress { };
+                        scimUserAddressforformatted.Formatted = formatted;
+                        scimUserAddressforformatted.Type = "work";
+                        scimUserAddressforformatted.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforformatted);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
+                case "addresses[type eq \"work\"].streetAddress":
+                    var streetAddress = (string)jObject["value"];
+
+                    var scimUserAddressListforstreetAddress = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if (scimUserAddressListforstreetAddress.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforstreetAddress in scimUserAddressListforstreetAddress)
+                        {
+                            scimUserAddressItemforstreetAddress.StreetAddress = streetAddress;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforstreetAddress);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforstreetAddress = new ScimUserAddress { };
+                        scimUserAddressforstreetAddress.StreetAddress = streetAddress;
+                        scimUserAddressforstreetAddress.Type = "work";
+                        scimUserAddressforstreetAddress.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforstreetAddress);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
+
+                case "addresses[type eq \"work\"].locality":
+                    var locality = (string)jObject["value"];
+
+                    var scimUserAddressListforlocality = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if (scimUserAddressListforlocality.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforlocality in scimUserAddressListforlocality)
+                        {
+                            scimUserAddressItemforlocality.Locality = locality;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforlocality);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforlocality = new ScimUserAddress { };
+                        scimUserAddressforlocality.Locality = locality;
+                        scimUserAddressforlocality.Type = "work";
+                        scimUserAddressforlocality.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforlocality);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
+                case "addresses[type eq \"work\"].region":
+                    var region = (string)jObject["value"];
+
+                    var scimUserAddressListforregion = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if (scimUserAddressListforregion.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforregion in scimUserAddressListforregion)
+                        {
+                            scimUserAddressItemforregion.Region = region;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforregion);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforregion = new ScimUserAddress { };
+                        scimUserAddressforregion.Region = region;
+                        scimUserAddressforregion.Type = "work";
+                        scimUserAddressforregion.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforregion);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
+                case "addresses[type eq \"work\"].postalCode":
+                    var postalCode = (string)jObject["value"];
+
+                    var scimUserAddressListforpostalCode = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if (scimUserAddressListforpostalCode.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforpostalCode in scimUserAddressListforpostalCode)
+                        {
+                            scimUserAddressItemforpostalCode.PostalCode = postalCode;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforpostalCode);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforpostalCode = new ScimUserAddress { };
+                        scimUserAddressforpostalCode.PostalCode = postalCode;
+                        scimUserAddressforpostalCode.Type = "work";
+                        scimUserAddressforpostalCode.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforpostalCode);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
+                case "addresses[type eq \"work\"].country":
+                    var country = (string)jObject["value"];
+
+                    var scimUserAddressListforcountry = scimUser.Addresses.Where(c => c.Type == "work").ToList();
+                    if (scimUserAddressListforcountry.Count > 0)
+                    {
+                        foreach (var scimUserAddressItemforcountry in scimUserAddressListforcountry)
+                        {
+                            scimUserAddressItemforcountry.Country = country;
+                            _scimDataContext.ScimUserAddresses.Update(scimUserAddressItemforcountry);
+                            _scimDataContext.SaveChanges();
+                        }
+
+                    }
+                    else
+                    {
+                        var scimUserAddressforcountry = new ScimUserAddress { };
+                        scimUserAddressforcountry.Country = country;
+                        scimUserAddressforcountry.Type = "work";
+                        scimUserAddressforcountry.ScimUser = scimUser;
+
+                        _scimDataContext.ScimUserAddresses.Add(scimUserAddressforcountry);
+                        _scimDataContext.SaveChanges();
+                    }
+                    break;
                 case "groups":
                     var groups = (JArray)jObject["value"];
                     foreach (var group in groups)
@@ -2613,7 +2905,11 @@ namespace MyScimAPI.Extensions
 
             if ((string)jObject["userName"] != null)
             {
-                throw new Exception();
+                if (scimUser.UserName != null)
+                {
+                    scimUser.UserName = null;
+                    _scimDataContext.ScimUsers.Update(scimUser);
+                }
             }
             if ((string)jObject["name"] != null)
             {
@@ -2621,6 +2917,36 @@ namespace MyScimAPI.Extensions
                 {
                     var scimUserName = scimUser.Name;
                     _scimDataContext.ScimUserNames.Remove(scimUserName);
+                    _scimDataContext.SaveChanges();
+                }
+            }
+            if ((string)jObject["name.givenName"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    var scimUserName = scimUser.Name;
+                    scimUserName.GivenName = null;
+                    _scimDataContext.ScimUserNames.Update(scimUserName);
+                    _scimDataContext.SaveChanges();
+                }
+            }
+            if ((string)jObject["name.familyName"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    var scimUserName = scimUser.Name;
+                    scimUserName.FamilyName = null;
+                    _scimDataContext.ScimUserNames.Update(scimUserName);
+                    _scimDataContext.SaveChanges();
+                }
+            }
+            if ((string)jObject["name.formatted"] != null)
+            {
+                if (scimUser.Name != null)
+                {
+                    var scimUserName = scimUser.Name;
+                    scimUserName.Formatted = null;
+                    _scimDataContext.ScimUserNames.Update(scimUserName);
                     _scimDataContext.SaveChanges();
                 }
             }
@@ -2691,7 +3017,7 @@ namespace MyScimAPI.Extensions
             }
             if ((string)jObject["active"] != null)
             {
-                throw new Exception();
+                //throw new Exception();
             }
             if ((string)jObject["password"] != null)
             {
@@ -2817,6 +3143,24 @@ namespace MyScimAPI.Extensions
                 {
                     scimUser.ExternalId = null;
                     _scimDataContext.ScimUsers.Update(scimUser);
+
+                }
+            }
+            if ((string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:employeeNumber"] != null)
+            {
+                if (scimUser.EnterpriseUser.EmployeeNumber != null)
+                {
+                    scimUser.EnterpriseUser.EmployeeNumber = null;
+                    _scimDataContext.ScimUserEnterpriseUsers.Update(scimUser.EnterpriseUser);
+
+                }
+            }
+            if ((string)jObject["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department"] != null)
+            {
+                if (scimUser.EnterpriseUser.Department != null)
+                {
+                    scimUser.EnterpriseUser.Department = null;
+                    _scimDataContext.ScimUserEnterpriseUsers.Update(scimUser.EnterpriseUser);
 
                 }
             }
@@ -2973,8 +3317,51 @@ namespace MyScimAPI.Extensions
                         _scimDataContext.SaveChanges();
                     }
                     break;
+                case "phoneNumbers[type eq \"work\"].value":
+                    foreach (var scimUserPhoneNumber in scimUser.PhoneNumbers.ToList())
+                    {
+                        if(scimUserPhoneNumber.Type == "work")
+                        {
+                            if(scimUserPhoneNumber.Value != null)
+                            {
+                                scimUserPhoneNumber.Value = null;
+                                _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumber);
+                                _scimDataContext.SaveChanges();
+                            }
 
+                        }
+                    }
+                    break;
+                case "phoneNumbers[type eq \"mobile\"].value":
+                    foreach (var scimUserPhoneNumber in scimUser.PhoneNumbers.ToList())
+                    {
+                        if (scimUserPhoneNumber.Type == "mobile")
+                        {
+                            if (scimUserPhoneNumber.Value != null)
+                            {
+                                scimUserPhoneNumber.Value = null;
+                                _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumber);
+                                _scimDataContext.SaveChanges();
+                            }
 
+                        }
+                    }
+                    break;
+                case "phoneNumbers[type eq \"fax\"].value":
+                    foreach (var scimUserPhoneNumber in scimUser.PhoneNumbers.ToList())
+                    {
+                        if (scimUserPhoneNumber.Type == "fax")
+                        {
+                            if (scimUserPhoneNumber.Value != null)
+                            {
+                                scimUserPhoneNumber.Value = null;
+                                _scimDataContext.ScimUserPhoneNumbers.Update(scimUserPhoneNumber);
+                                _scimDataContext.SaveChanges();
+                            }
+
+                        }
+                    }
+                    break;
                 case "ims":
                     foreach (var scimUserIm in scimUser.Ims.ToList())
                     {
@@ -2999,6 +3386,95 @@ namespace MyScimAPI.Extensions
                     }
                     break;
 
+                case "addresses[type eq \"work\"].formatted":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if(scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.Formatted != null)
+                            {
+                                scimUserAddress.Formatted = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+
+                        }
+                    }
+                    break;
+                case "addresses[type eq \"work\"].streetAddress":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if (scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.StreetAddress != null)
+                            {
+                                scimUserAddress.StreetAddress = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+
+                        }
+                    }
+                    break;
+                case "addresses[type eq \"work\"].locality":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if (scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.Locality != null)
+                            {
+                                scimUserAddress.Locality = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+                        }
+
+                    }
+                    break;
+                case "addresses[type eq \"work\"].region":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if (scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.Region != null)
+                            {
+                                scimUserAddress.Region = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+                        }
+                    }
+                    break;
+                case "addresses[type eq \"work\"].postalCode":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if (scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.PostalCode != null)
+                            {
+                                scimUserAddress.PostalCode = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+                        }
+
+                    }
+                    break;
+                case "addresses[type eq \"work\"].country":
+                    foreach (var scimUserAddress in scimUser.Addresses.ToList())
+                    {
+                        if (scimUserAddress.Type == "work")
+                        {
+                            if (scimUserAddress.Country != null)
+                            {
+                                scimUserAddress.Country = null;
+                                _scimDataContext.ScimUserAddresses.Update(scimUserAddress);
+                                _scimDataContext.SaveChanges();
+                            }
+                        }
+
+                    }
+                    break;
                 case "groups":
                     foreach (var scimUserGroup in scimUser.Groups.ToList())
                     {
@@ -3557,7 +4033,7 @@ namespace MyScimAPI.Extensions
                     if(path.Contains("members[value eq"))
                     {
 
-                        var memberId = path.Replace("members[value eq\"", "").Replace("\"]", "");
+                        var memberId = path.Replace("members[value eq \"", "").Replace("\"]", "");
 
                         foreach (var scimGroupMember in scimGroup.Members.ToList())
                         {
