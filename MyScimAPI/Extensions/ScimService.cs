@@ -2778,7 +2778,7 @@ namespace MyScimAPI.Extensions
                         if (scimUser.EnterpriseUser.Manager != null)
                         {
                             var strmanager = (string)jObject["value"];
-                            if (string.IsNullOrEmpty(strmanager))
+                            if (strmanager == null)
                             {
                                 var manager = (JObject)jObject["value"];
                                 scimUser.EnterpriseUser.Manager.Value = (string)manager["value"];
@@ -2801,7 +2801,7 @@ namespace MyScimAPI.Extensions
                             var scimUserManager = new ScimUserManager { };
 
                             var strmanager = (string)jObject["value"];
-                            if (string.IsNullOrEmpty(strmanager))
+                            if (strmanager == null)
                             {
                                 var manager = (JObject)jObject["value"];
                                 scimUserManager.Value = (string)manager["value"];
@@ -2827,7 +2827,7 @@ namespace MyScimAPI.Extensions
                     {
                         var scimUserManager = new ScimUserManager { };
                         var strmanager = (string)jObject["value"];
-                        if(string.IsNullOrEmpty(strmanager))
+                        if(strmanager == null)
                         {
                             var manager = (JObject)jObject["value"];
                             scimUserManager.Value = (string)manager["value"];
